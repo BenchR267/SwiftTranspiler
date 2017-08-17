@@ -5,7 +5,7 @@ class SwiftTranspilerTests: XCTestCase {
     func testExample() throws {
         
         let input = """
-let a = 4
+let a = false
 """
         
         

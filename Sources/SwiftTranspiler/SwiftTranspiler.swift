@@ -4,35 +4,63 @@ enum LexerError: UInt64, ParseError {
     case stringDoesNotMatch
 }
 
-enum Token {
-    enum Literal {
-        case string(String)
-        case int(Int)
-    }
-    
+public enum LiteralType {
+    case int(Int)
+    case string(String)
+    case double(Double)
+    case float(Float)
+    case bool(Bool)
+}
+
+public enum Token {
     case identifier(String)
-    case literal(Literal)
-    case letK
+    case keyword(String)
+    case parenthesisOpen
+    case parenthesisClose
+    case curlyBracketOpen
+    case curlyBracketClose
+    case squareBracketOpen
+    case squareBracketClose
+    case questionMark
+    case bang
+    case underscore
+    case and
+    case or
+    case logicalAnd
+    case logicalOr
+    case arrow
+    case comma
+    case point
+    case colon
+    case assign
+    case plusAssign
+    case minusAssign
+    case plus
+    case minus
+    case slash
+    case multiply
+    case percent
     case equal
+    case notEqual
+    case greater
+    case less
+    case greaterEqual
+    case lessEqual
+    case literal(LiteralType)
+    case comment(String)
+    case illegal
+    case space
+    case tab
+    case newLine
 }
 
 let identifier = "[a-zA-Z_][a-zA-Z0-9_]*".r ^^ { Token.identifier($0) }
 
-let literal = ("\"".r >~ "[^\"]*".r <~ "\"".r) ^^ { Token.literal(.string($0)) } |
-              ("[0-9]+".r ^^ { Token.literal(.int(Int($0)!)) })
+let literal = /* Double */ ("-?[0-9]+(\\.[0-9]+)?".r) ^^ { Token.literal(.double(Double($0)!)) } |
+              /* Int    */ ("-?[0-9]+".r ^^ { Token.literal(.int(Int($0)!)) }) |
+              /* Bool   */ ((string("true") | string("false")) ^^ { Token.literal(.bool($0 == "true")) }) |
+              /* String */ (string("\"") >~ "[^\"]*".r <~ string("\"")) ^^ { Token.literal(.string($0)) }
 
-func string(_ v: String) -> Parser<String, String> {
-    return Parser { str in
-        guard str.hasPrefix(v) else {
-            return .fail(LexerError.stringDoesNotMatch)
-        }
-        return .success(result: v, rest: String(str.dropFirst(v.count)))
-    }
-}
 
-let letK = string("let") ^^ { _ in Token.letK }
-let equal = string("=") ^^ { _ in Token.equal }
 
-let keyword = letK | equal
-
-let swift = (keyword | literal | identifier).rep(sep: " *".r)
+let swift = (symbol | keyword | literal | identifier).rep(sep: "[\\s]*".r)
