@@ -12,6 +12,6 @@ let literal = /* Double */ ("-?[0-9]+(\\.[0-9]+)?".r) ^^ { Token.literal(.double
               /* Bool   */ ((string("true") | string("false")) ^^ { Token.literal(.bool($0 == "true")) }) |
               /* String */ (string("\"") >~ "[^\"]*".r <~ string("\"")) ^^ { Token.literal(.string($0)) }
 
-let comment = "//.*\n".r ^^ { Token.comment(String($0.dropLast())) }
+let comment = ("//.*".r <~ string("\n")) ^^ { Token.comment($0) }
 
 let lexer = (comment | symbol | keyword | literal | identifier).rep(sep: "[\\s]*".r)
