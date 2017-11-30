@@ -2,11 +2,11 @@
   "object": {
     "pins": [
       {
-        "package": "ParserCombinator",
-        "repositoryURL": "https://github.com/BenchR267/ParserCombinator",
+        "package": "Parsel",
+        "repositoryURL": "https://github.com/BenchR267/Parsel",
         "state": {
-          "branch": "develop",
-          "revision": "fe98ca3378c493bcba0cc6c899814d2f845a7d3c",
+          "branch": "master",
+          "revision": "bfee84726571f90ead431e013e87fd5465345d0a",
           "version": null
         }
       }

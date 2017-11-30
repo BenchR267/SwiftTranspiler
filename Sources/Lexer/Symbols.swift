@@ -1,4 +1,4 @@
-import ParserCombinator
+import Parsel
 import Core
 
 let mapping: [(String, Token)] = [

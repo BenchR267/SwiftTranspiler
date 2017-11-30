@@ -12,7 +12,7 @@ let package = Package(
             targets: ["SwiftTranspiler"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/BenchR267/ParserCombinator", .branch("develop"))
+        .package(url: "https://github.com/BenchR267/Parsel", .branch("master"))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -22,7 +22,7 @@ let package = Package(
             dependencies: ["Lexer", "Parser"]),
         .target(
             name: "Core",
-            dependencies: ["ParserCombinator"]),
+            dependencies: ["Parsel"]),
         .target(
             name: "Lexer",
             dependencies: ["Core"]),

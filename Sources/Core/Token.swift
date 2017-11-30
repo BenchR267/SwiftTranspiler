@@ -1,4 +1,4 @@
-import ParserCombinator
+import Parsel
 
 public enum LiteralType {
     case int(Int)

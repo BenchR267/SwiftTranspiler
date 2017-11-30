@@ -5,7 +5,7 @@
 //  Created by Benjamin Herzog on 17.08.17.
 //
 
-import ParserCombinator
+import Parsel
 
 public func string(_ v: String) -> Parser<String, String> {
     return Parser { str in

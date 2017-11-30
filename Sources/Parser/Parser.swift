@@ -1,4 +1,4 @@
-import ParserCombinator
+import Parsel
 import Core
 import Lexer
 
@@ -20,4 +20,4 @@ let identifier = Parser<[Token], String> { tokens in
 
 public let parameterDecl = ((identifier <~ token(.colon)) ~ identifier) ^^ ParameterDecl.init
 
-public let letDecl = token(.keyword("let")) >~ parameterDecl
+public let letDecl = token(.keyword("let")) ~> parameterDecl
