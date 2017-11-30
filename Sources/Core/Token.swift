@@ -1,14 +1,14 @@
 import Parsel
 
-public enum LiteralType {
-    case int(Int)
-    case string(String)
-    case double(Double)
-    case float(Float)
-    case bool(Bool)
-}
-
 public enum Token {
+    public enum LiteralType {
+        case int(Int)
+        case string(String)
+        case double(Double)
+        case float(Float)
+        case bool(Bool)
+    }
+    
     case identifier(String)
     case keyword(String)
     case parenthesisOpen

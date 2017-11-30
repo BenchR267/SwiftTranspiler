@@ -14,11 +14,13 @@ public enum LexerError: UInt64, ParseError {
 public enum ParserError: ParseError {
     case unexpectedToken(expected: String, got: Token)
     case missingToken(Token)
+    case emptyInput
     
     public var code: UInt64 {
         switch self {
         case .unexpectedToken(_, _): return 0
         case .missingToken(_): return 1
+        case .emptyInput: return 2
         }
     }
 }
