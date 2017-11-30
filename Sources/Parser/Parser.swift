@@ -30,8 +30,31 @@ let literal = Parser<[Token], Token.LiteralType> { tokens in
     }
 }
 
-let expression = literal ^^ { Expression.token(Token.literal($0)) }
+let expression: Parser<[Token], Expression> =
+    /* literal */    (literal ^^ { .token(.literal($0)) }) |
+    /* identifier */ (identifier ^^ { .token(.identifier($0)) })
 
-public let parameterDecl = identifier <~ token(.colon) ~ identifier ^^ ParameterDecl.init
+public func parameterDecl(namelist: Namelist) -> Parser<[Token], ParameterDecl> {
+    return (identifier ~ (token(.colon) ~> identifier).optional ~ (token(.assign) ~> expression).optional).flatMap { r in
+        let name = r.0
+        let declaredType = r.1
+        let expression = r.2
+        
+        if let declared = declaredType, let e = expression, declared == e.type(namelist) {
+            return Parser<[Token], ParameterDecl>.just(ParameterDecl(name: name, type: declared, expression: expression))
+        } else if let e = expression, declaredType == nil {
+            return Parser<[Token], ParameterDecl>.just(ParameterDecl(name: name, type: e.type(namelist), expression: expression))
+        } else if let declared = declaredType, expression == nil {
+            return Parser<[Token], ParameterDecl>.just(ParameterDecl(name: name, type: declared, expression: expression))
+        }
+        
+        return Parser.fail(error: ParserError.emptyInput)
+    }
+}
 
-public let letDecl = token(.keyword("let")) ~> parameterDecl ~ (token(.assign) ~> expression) ^^ { LetDecl(parameter: $0, expression: $1) }
+public func letDecl(namelist: Namelist) -> Parser<[Token], LetDecl> {
+    return token(.keyword("let")) ~> parameterDecl(namelist: namelist) ^^ { p in
+        namelist[p.name] = IdentifierInformation(type: p.type, mutable: false)
+        return LetDecl(parameter: p)
+    }
+}

@@ -45,11 +45,15 @@ func b(parameter: Int) -> Int {
 
     func test_parser() throws {
         let input = """
-let a: Int = 4
+let b = 5
+let a: Int = b
 """
-        let a = lexer.map(letDecl.parse)
+        let namelist = Namelist()
+        
+        let a = lexer.map(letDecl(namelist: namelist).rep.parse)
         
         print(">>> ", try a.parse(input).unwrap())
+        print(">>> ", namelist.content)
     }
 
     static var allTests = [

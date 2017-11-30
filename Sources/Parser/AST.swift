@@ -1,5 +1,17 @@
 import Core
 
+public class Namelist {
+    init(_ content: [String: IdentifierInformation] = [:]) {
+        self.content = content
+    }
+    
+    var content = [String: IdentifierInformation]()
+    subscript(_ key: String) -> IdentifierInformation? {
+        get { return self.content[key] }
+        set { self.content[key] = newValue }
+    }
+}
+
 public struct Program {
     public var scope: Scope
 }
@@ -49,17 +61,16 @@ public struct FunctionBody {
 
 public struct VariableDecl {
     public var parameter: ParameterDecl
-    public var expression: Expression?
 }
 
 public struct LetDecl {
     public var parameter: ParameterDecl
-    var expression: Expression?
 }
 
 public struct ParameterDecl {
     public var name: String
     public var type: String
+    public var expression: Expression?
 }
 
 public enum ControlStructure {
@@ -110,7 +121,7 @@ public indirect enum Expression {
     case condition(Condition)
     case calculation(MultipleCalculation)
 
-    public func type(_ namelist: [String: IdentifierInformation]) -> String {
+    public func type(_ namelist: Namelist) -> String {
         switch self {
         case .token(let token):
             switch token {
