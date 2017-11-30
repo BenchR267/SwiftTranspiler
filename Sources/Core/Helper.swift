@@ -7,7 +7,7 @@
 
 import ParserCombinator
 
-func string(_ v: String) -> Parser<String, String> {
+public func string(_ v: String) -> Parser<String, String> {
     return Parser { str in
         guard str.hasPrefix(v) else {
             return .fail(LexerError.stringDoesNotMatch)

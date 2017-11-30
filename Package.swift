@@ -19,7 +19,16 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "SwiftTranspiler",
+            dependencies: ["Lexer", "Parser"]),
+        .target(
+            name: "Core",
             dependencies: ["ParserCombinator"]),
+        .target(
+            name: "Lexer",
+            dependencies: ["Core"]),
+        .target(
+            name: "Parser",
+            dependencies: ["Core", "Lexer"]),
         .testTarget(
             name: "SwiftTranspilerTests",
             dependencies: ["SwiftTranspiler"]),

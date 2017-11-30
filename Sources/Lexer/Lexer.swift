@@ -1,8 +1,5 @@
+import Core
 import ParserCombinator
-
-enum LexerError: UInt64, ParseError {
-    case stringDoesNotMatch
-}
 
 let identifier = "[a-zA-Z_][a-zA-Z0-9_]*".r ^^ { Token.identifier($0) }
 
@@ -14,4 +11,4 @@ let literal = /* Int    */ ("-?[0-9]+".r ^^ { Token.literal(.int(Int($0)!)) }) |
 
 let comment = ("//.*".r <~ string("\n")) ^^ { Token.comment($0) }
 
-let lexer = (comment | symbol | keyword | literal | identifier).rep(sep: "[\\s]*".r)
+public let lexer = (comment | symbol | keyword | literal | identifier).rep(sep: "[\\s]*".r)

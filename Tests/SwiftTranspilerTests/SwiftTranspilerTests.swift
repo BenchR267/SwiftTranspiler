@@ -1,5 +1,7 @@
 import XCTest
-@testable import SwiftTranspiler
+import Core
+import Lexer
+@testable import Parser
 
 class SwiftTranspilerTests: XCTestCase {
     func testExample() throws {
@@ -41,6 +43,14 @@ func b(parameter: Int) -> Int {
         XCTAssertEqual(try tokens.rest(), "")
     }
 
+    func test_parser() throws {
+        let input = """
+let a: Int = 4
+"""
+        let a = lexer.map(letDecl.parse)
+        
+        print(">>> ", try a.parse(input).unwrap())
+    }
 
     static var allTests = [
         ("testExample", testExample),

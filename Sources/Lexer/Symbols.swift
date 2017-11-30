@@ -1,4 +1,5 @@
 import ParserCombinator
+import Core
 
 let mapping: [(String, Token)] = [
     ("(", Token.parenthesisOpen),
