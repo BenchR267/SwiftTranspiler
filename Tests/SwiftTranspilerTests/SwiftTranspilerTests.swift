@@ -46,11 +46,11 @@ func b(parameter: Int) -> Int {
     func test_parser() throws {
         let input = """
 let b = 5
-let a: Int = b
+var a: Int = b
 """
         let namelist = Namelist()
         
-        let a = lexer.map(letDecl(namelist: namelist).rep.parse)
+        let a = lexer.map(declaration(namelist: namelist).rep.parse)
         
         print(">>> ", try a.parse(input).unwrap())
         print(">>> ", namelist.content)

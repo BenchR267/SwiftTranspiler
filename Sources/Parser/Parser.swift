@@ -58,3 +58,16 @@ public func letDecl(namelist: Namelist) -> Parser<[Token], LetDecl> {
         return LetDecl(parameter: p)
     }
 }
+
+public func varDecl(namelist: Namelist) -> Parser<[Token], VariableDecl> {
+    return token(.keyword("var")) ~> parameterDecl(namelist: namelist) ^^ { p in
+        namelist[p.name] = IdentifierInformation(type: p.type, mutable: true)
+        return VariableDecl(parameter: p)
+    }
+}
+
+public func declaration(namelist: Namelist) -> Parser<[Token], Declaration> {
+    return
+        (letDecl(namelist: namelist) ^^ { .constant($0) }) |
+        (varDecl(namelist: namelist) ^^ { .variable($0) })
+}

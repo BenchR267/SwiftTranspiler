@@ -53,7 +53,7 @@ extension Token: Equatable {
     public static func ==(lhs: Token, rhs: Token) -> Bool {
         switch (lhs, rhs) {
         case (.identifier, .identifier): return true
-        case (.keyword, .keyword): return true
+        case (.keyword(let k1), .keyword(let k2)): return k1 == k2
         case (.parenthesisOpen, .parenthesisOpen): return true
         case (.parenthesisClose, .parenthesisClose): return true
         case (.curlyBracketOpen, .curlyBracketOpen): return true
